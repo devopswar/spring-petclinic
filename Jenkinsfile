@@ -48,7 +48,7 @@ pipeline {
                                 /* Run some tests which require MySQL */
                                 // after the mysql is up -> run the target
                                 sh 'java -jar ./target/*.jar &'
-                                
+                                   
                                 //input id: 'Deploy', message: 'Proceed with Green node deployment?', ok: 'Deploy!'                       
                                 
                          } // end docker run
