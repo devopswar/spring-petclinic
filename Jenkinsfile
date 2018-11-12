@@ -22,8 +22,14 @@ pipeline {
 
         stage ('Build') {
             steps {
-                    sh 'sudo apt-get install -y default-jdk'
-                    sh 'sudo apt-get install -y mysql-client-5.7'
+                    //sh 'sudo apt-get install -y default-jdk'
+                    //sh 'sudo apt-get install -y mysql-client-5.7'
+                    script {
+                            ansibleTower credential: '', extraVars: '', importTowerLogs: false, 
+                                         importWorkflowChildLogs: false, inventory: '', jobTags: '', 
+                                         jobTemplate: 'config-worker', jobType: 'run', limit: '', removeColor: false, 
+                                         skipJobTags: '', templateType: 'job', towerServer: 'ansible1', verbose: true                    
+                    }                    
                     sh 'sudo ~/mvnw package -Dmaven.test.skip=true' 
             }
             post {
