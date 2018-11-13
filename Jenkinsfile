@@ -40,7 +40,7 @@ pipeline {
         } // end stage build
             
         stage ('Test') {
-                steps {
+                 steps {
                      sh 'pwd'
                      script {
                         docker.image('mysql:5.7.8').withRun('-e "MYSQL_ROOT_PASSWORD=petclinic" -e "MYSQL_DATABASE=petclinic" -p 3306:3306') { c ->
