@@ -7,14 +7,6 @@
   <artifactId>spring-petclinic</artifactId>
   <version>2.0.0</version>
  
-  <parent>
-    <groupId>org.springframework.boot</groupId>
-    <artifactId>spring-boot-starter-parent</artifactId>
-    <version>2.0.0.BUILD-SNAPSHOT</version>
-  </parent>
-  <name>petclinic</name>
-
-    
 <profile>
     <id>dev</id>
     <properties>
@@ -30,6 +22,16 @@
         <activatedProperties>release</activatedProperties>
     </properties>
 </profile>    
+    
+    
+  <parent>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-parent</artifactId>
+    <version>2.0.0.BUILD-SNAPSHOT</version>
+  </parent>
+  <name>petclinic</name>
+
+    
     
   <properties>
 
