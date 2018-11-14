@@ -52,6 +52,8 @@ pipeline {
                      sh 'sudo /usr/sbin/usermod -aG docker $USER'
                      sh 'sudo -s'
                      sh 'sudo docker version'
+                         
+                     sh 'sg "$(id -gn)" -c "groups"'
                      sh 'docker version'
                          
                      script {
