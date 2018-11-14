@@ -49,9 +49,9 @@ pipeline {
                      //sh 'docker version'
                      //sh 'su -l $USER'
                      sh 'sudo groupadd docker || true'
-                     sh 'sudo /usr/sbin/usermod -aG docker $USER'
-                     sh 'sudo -s'
-                     sh 'sudo docker version'
+                     sh 'sudo gpasswd -a $USER docker'
+                     sh 'newgrp docker'
+                     sh 'docker version'
                          
                      sh 'sg "$(id -gn)" -c "groups"'
                      sh 'docker version'
