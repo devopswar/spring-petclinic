@@ -25,14 +25,14 @@ pipeline {
                     //sh 'sudo apt-get install -y default-jdk'
                     //sh 'sudo apt-get install -y mysql-client-5.7'
                     
-                    /*
+                    
                     script {
                             ansibleTower credential: '', extraVars: '', importTowerLogs: false, 
                                          importWorkflowChildLogs: false, inventory: '', jobTags: '', 
                                          jobTemplate: 'config-worker', jobType: 'run', limit: '', removeColor: false, 
                                          skipJobTags: '', templateType: 'job', towerServer: 'ansible1', verbose: true                    
                     } 
-                    */
+                    
                     sh 'sudo ~/mvnw package -Dmaven.test.skip=true' 
             }
             post {
@@ -47,8 +47,9 @@ pipeline {
                      sh 'pwd'
                      sh 'whoami && id'
                      sh 'docker version'
-                     //sh 'sudo groupadd docker'
-                     //sh 'sudo usermod -aG docker $USER'
+                     //sh 'su -l $USER'
+                     sh 'sudo groupadd docker || true'
+                     sh 'sudo ./usr/sbin/usermod -aG docker $USER'
                      script {
                         docker.image('mysql:5.7.8').withRun('-e "MYSQL_ROOT_PASSWORD=petclinic" -e "MYSQL_DATABASE=petclinic" -p 3306:3306') { c ->
                                 /* Wait until mysql service is up */
