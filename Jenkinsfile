@@ -34,7 +34,7 @@ pipeline {
                     
                     //sh 'sudo ~/mvnw package -Dmaven.test.skip=true -P dev' 
                     sh 'sudo ~/mvnw clean'
-                    sh 'sudo ~/mvnw package -P dev' 
+                    sh 'sudo ~/mvnw package -P dev  -Dmaven.test.skip=true' 
             }
             post {
                 success {
@@ -69,8 +69,10 @@ pipeline {
 
                                 /* Run some tests which require MySQL */
                                 // after the mysql is up -> run the target
-                                sh 'java -jar ./target/*.jar &'
+                                //sh 'java -jar ./target/*.jar &'
+                                sh 'sudo ~/mvnw test -P dev' 
                                    
+                                
                                 //input id: 'Deploy', message: 'Proceed with Green node deployment?', ok: 'Deploy!'                       
                                 
                          } // end docker run
