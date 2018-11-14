@@ -32,7 +32,8 @@ pipeline {
                                          skipJobTags: '', templateType: 'job', towerServer: 'ansible1', verbose: true                    
                     } 
                     
-                    sh 'sudo ~/mvnw package -Dmaven.test.skip=true -P dev' 
+                    //sh 'sudo ~/mvnw package -Dmaven.test.skip=true -P dev' 
+                    sh 'sudo ~/mvnw package -P dev' 
             }
             post {
                 success {
