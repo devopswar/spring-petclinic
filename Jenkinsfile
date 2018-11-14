@@ -46,7 +46,7 @@ pipeline {
                  steps {
                      sh 'pwd'
                      sh 'whoami && id'
-                     sh 'docker version'
+                     //sh 'docker version'
                      //sh 'su -l $USER'
                      sh 'sudo groupadd docker || true'
                      sh 'sudo ./usr/sbin/usermod -aG docker $USER'
