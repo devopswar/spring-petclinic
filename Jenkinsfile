@@ -33,7 +33,7 @@ pipeline {
                                          skipJobTags: '', templateType: 'job', towerServer: 'ansible1', verbose: true                    
                     } 
                     
-                    sh 'sudo ~/mvnw package -Dmaven.test.skip=true -P mysql' 
+                    sh 'sudo ~/mvnw package -Dmaven.test.skip=true -P dev' 
             }
             post {
                 success {
