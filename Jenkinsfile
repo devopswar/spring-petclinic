@@ -51,6 +51,8 @@ pipeline {
                      sh 'sudo groupadd docker || true'
                      sh 'sudo /usr/sbin/usermod -aG docker $USER'
                      sh 'sudo -s'
+                     sh 'sudo docker version'
+                     sh 'docker version'
                          
                      script {
                         docker.image('mysql:5.7.8').withRun('-e "MYSQL_ROOT_PASSWORD=petclinic" -e "MYSQL_DATABASE=petclinic" -p 3306:3306') { c ->
