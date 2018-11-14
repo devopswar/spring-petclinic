@@ -49,7 +49,7 @@ pipeline {
                      //sh 'docker version'
                      //sh 'su -l $USER'
                      sh 'sudo groupadd docker || true'
-                     sh 'sudo ./usr/sbin/usermod -aG docker $USER'
+                     sh 'sudo /usr/sbin/usermod -aG docker $USER'
                      script {
                         docker.image('mysql:5.7.8').withRun('-e "MYSQL_ROOT_PASSWORD=petclinic" -e "MYSQL_DATABASE=petclinic" -p 3306:3306') { c ->
                                 /* Wait until mysql service is up */
