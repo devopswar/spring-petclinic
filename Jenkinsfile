@@ -20,12 +20,11 @@ pipeline {
             }
         }
 
-        stage ('Build') {
+        stage ('Build Dev') {
             steps {
                     //sh 'sudo apt-get install -y default-jdk'
                     //sh 'sudo apt-get install -y mysql-client-5.7'
-                    
-                    
+                                       
                     script {
                             ansibleTower credential: '', extraVars: '', importTowerLogs: false, 
                                          importWorkflowChildLogs: false, inventory: '', jobTags: '', 
@@ -33,11 +32,11 @@ pipeline {
                                          skipJobTags: '', templateType: 'job', towerServer: 'ansible1', verbose: true                    
                     } 
                     
-                    sh 'sudo ~/mvnw package -Dmaven.test.skip=true -P release' 
+                    sh 'sudo ~/mvnw package -Dmaven.test.skip=true -P dev' 
             }
             post {
                 success {
-                    echo 'build success' // run sonarqube tests here...   junit 'target/surefire-reports/**/*.xml' 
+                    echo 'build dev success' // run sonarqube tests here...   junit 'target/surefire-reports/**/*.xml' 
                 }
             }
         } // end stage build
@@ -87,6 +86,18 @@ pipeline {
                }    
         }
             
+        stage ('Build Release') {
+            steps {
+                    //sh 'sudo apt-get install -y default-jdk'
+                    //sh 'sudo apt-get install -y mysql-client-5.7'
+                    sh 'sudo ~/mvnw package -Dmaven.test.skip=true -P release' 
+            }
+            post {
+                success {
+                    echo 'build release success' // run sonarqube tests here...   junit 'target/surefire-reports/**/*.xml' 
+                }
+            }
+        } // end stage build
             
         stage ('Deploy') {
                steps {
