@@ -22,9 +22,9 @@ pipeline {
 
         stage ('Build') {
             steps {
-                    sh 'sudo apt-get install -y default-jdk'
-                    sh 'sudo apt-get install -y mysql-client-5.7'
-                    sh 'sudo ~/mvnw package -Dmaven.test.skip=true' 
+                    //sh 'sudo apt-get install -y default-jdk'
+                    //sh 'sudo apt-get install -y mysql-client-5.7'
+                    sh 'sudo ~/mvnw package' 
             }
             post {
                 success {
