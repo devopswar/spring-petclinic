@@ -51,6 +51,7 @@ pipeline {
                      sh 'sudo groupadd docker || true'
                      sh 'sudo gpasswd -a $USER docker'
                      sh 'newgrp docker'
+                     sh 'exec su -'
                      sh 'docker version'
                          
                      sh 'sg "$(id -gn)" -c "groups"'
