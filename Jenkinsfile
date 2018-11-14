@@ -33,7 +33,7 @@ pipeline {
                                          skipJobTags: '', templateType: 'job', towerServer: 'ansible1', verbose: true                    
                     } 
                     
-                    sh 'sudo ~/mvnw package -Dmaven.test.skip=true -Dspring.datasource.url=jdbc:mysql://localhost/petclinic' 
+                    sh 'sudo ~/mvnw package -Dmaven.test.skip=true -P mysql' 
             }
             post {
                 success {
