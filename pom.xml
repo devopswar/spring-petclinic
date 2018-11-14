@@ -22,6 +22,12 @@
               <activatedProperties>release</activatedProperties>
           </properties>
       </profile>
+      <profile>
+          <id>test</id>
+          <properties>
+              <activatedProperties>test</activatedProperties>
+          </properties>
+      </profile>
     </profiles>
     
   <parent>
