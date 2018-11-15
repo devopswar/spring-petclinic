@@ -49,10 +49,10 @@ pipeline {
                      sh 'whoami && id'
                      //sh 'docker version'
                      //sh 'su -l $USER'
-                     sh 'sudo groupadd docker || true'
-                     sh 'sudo gpasswd -a $USER docker'
-                     sh 'newgrp docker'
-                     
+                     //sh 'sudo groupadd docker || true'
+                     //sh 'sudo gpasswd -a $USER docker'
+                     //sh 'newgrp docker'
+                     sh 'su ubuntu'
                      sh 'docker version'
                          
                      sh 'sg "$(id -gn)" -c "groups"'
