@@ -117,7 +117,7 @@ pipeline {
                             {
                                  // delete previous run
                                  sh 'kubectl delete delpoy petclinic || true'                                    
-                                 sh 'kubectl run petclinic --image=devopswar/petclinic --replicas=3'                                    
+                                 sh 'kubectl run petclinic --image=devopswar/petclinic --replicas=3 --image-pull-policy Always'                                    
                             }                                    
 
                                     
