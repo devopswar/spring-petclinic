@@ -34,7 +34,7 @@ pipeline {
                     
                     //sh 'sudo ~/mvnw package -Dmaven.test.skip=true -P dev' 
                     sh 'sudo ~/mvnw clean'
-                    sh 'sudo ~/mvnw package -P dev  -Dmaven.test.skip=true' 
+                    //sh 'sudo ~/mvnw package -P dev  -Dmaven.test.skip=true' 
             }
             post {
                 success {
@@ -70,7 +70,7 @@ pipeline {
                                 /* Run some tests which require MySQL */
                                 // after the mysql is up -> run the target
                                 //sh 'java -jar ./target/*.jar &'
-                                sh 'sudo ~/mvnw clean test -P test' 
+                                sh 'sudo ~/mvnw test -P test' 
                                    
                                 
                                 //input id: 'Deploy', message: 'Proceed with Green node deployment?', ok: 'Deploy!'                       
