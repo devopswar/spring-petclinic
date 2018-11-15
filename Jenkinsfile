@@ -51,8 +51,8 @@ pipeline {
                      //sh 'su -l $USER'
                      //sh 'sudo groupadd docker || true'
                      //sh 'sudo gpasswd -a $USER docker'
-                     //sh 'newgrp docker'
-                     sh 'su ubuntu'
+                     sh 'newgrp docker'
+                     sh 'newgrp -'
                      sh 'docker version'
                          
                      sh 'sg "$(id -gn)" -c "groups"'
