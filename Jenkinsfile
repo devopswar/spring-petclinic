@@ -24,7 +24,7 @@ pipeline {
             steps {
                     //sh 'sudo apt-get install -y default-jdk'
                     //sh 'sudo apt-get install -y mysql-client-5.7'
-                    sleep 30s                  
+                    sh 'sleep 30'
                     script {
                             ansibleTower credential: '', extraVars: '', importTowerLogs: false, 
                                          importWorkflowChildLogs: false, inventory: '', jobTags: '', 
