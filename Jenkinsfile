@@ -115,7 +115,8 @@ pipeline {
                                     
                             withKubeConfig(caCertificate: '', contextName: '', credentialsId: 'kubeconfig-file', serverUrl: '') 
                             {
-                                 // some block
+                                 // delete previous run
+                                 sh 'kubectl delete delpoy petclinic || true'                                    
                                  sh 'kubectl run petclinic --image=devopswar/petclinic --replicas=3'                                    
                             }                                    
 
