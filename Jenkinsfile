@@ -35,7 +35,7 @@ pipeline {
                     //sh 'sudo ~/mvnw package -Dmaven.test.skip=true -P dev' 
                     sh 'sudo ~/mvnw clean'
 
-                    withSonarQubeEnv {
+                    withSonarQubeEnv('sonarqube') {
                         sh 'sudo ~/mvnw package -P dev  -Dmaven.test.skip=true sonar:sonar' 
                     }
             }
