@@ -34,7 +34,7 @@ pipeline {
                             //sh 'sudo ~/mvnw package -Dmaven.test.skip=true -P dev' 
                             sh 'sudo ~/mvnw clean'
 
-                            docker.image('sonarqube').withRun('-d --name "sonarqube" p 9092:9092 -p 9000:9000') { c ->
+                            docker.image('sonarqube').withRun('--name "sonarqube" -p 9092:9092 -p 9000:9000') { c ->
                                  withSonarQubeEnv('sonarqube') {
                                        sh 'sudo ~/mvnw package -P dev  -Dmaven.test.skip=true sonar:sonar' 
                                  }
