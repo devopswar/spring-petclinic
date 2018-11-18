@@ -34,7 +34,7 @@ pipeline {
                     
                     //sh 'sudo ~/mvnw package -Dmaven.test.skip=true -P dev' 
                     sh 'sudo ~/mvnw clean'
-                    //sh 'sudo ~/mvnw package -P dev  -Dmaven.test.skip=true' 
+                    sh 'sudo ~/mvnw package -P dev  -Dmaven.test.skip=true' 
             }
             post {
                 success {
@@ -51,12 +51,12 @@ pipeline {
                      //sh 'su -l $USER'
                      //sh 'sudo groupadd docker || true'
                      //sh 'sudo gpasswd -a $USER docker'
-                     sh 'newgrp docker'
-                     sh 'newgrp -'
-                     sh 'docker version'
+                     //sh 'newgrp docker'
+                     //sh 'newgrp -'
+                     //sh 'docker version'
                          
-                     sh 'sg "$(id -gn)" -c "groups"'
-                     sh 'docker version'
+                     //sh 'sg "$(id -gn)" -c "groups"'
+                     //sh 'docker version'
                          
                      script {
                         docker.image('mysql:5.7.8').withRun('-e "MYSQL_ROOT_PASSWORD=petclinic" -e "MYSQL_DATABASE=petclinic" -p 3306:3306') { c ->
