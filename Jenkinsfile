@@ -116,7 +116,7 @@ pipeline {
                             withKubeConfig(caCertificate: '', contextName: '', credentialsId: 'kubeconfig-file', serverUrl: '') 
                             {
                                  // delete previous run
-                                 sh 'kubectl delete delpoy petclinic || true'                                    
+                                 sh 'kubectl delete deploy petclinic || true'                                    
                                  sh 'kubectl run petclinic --replicas=5 --labels="run=petclinic" --image=devopswar/petclinic --image-pull-policy Always'
                                  sh 'kubectl expose deployment petclinic --type=NodePort --name=petclinic-svc --port=8080 || true' 
                             }                                    
