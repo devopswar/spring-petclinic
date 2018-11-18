@@ -30,16 +30,16 @@ pipeline {
                                          importWorkflowChildLogs: false, inventory: '', jobTags: '', 
                                          jobTemplate: 'config-worker', jobType: 'run', limit: '', removeColor: false, 
                                          skipJobTags: '', templateType: 'job', towerServer: 'ansible1', verbose: true                    
-                    } 
-                    
-                    //sh 'sudo ~/mvnw package -Dmaven.test.skip=true -P dev' 
-                    sh 'sudo ~/mvnw clean'
 
-                    docker.image('sonarqube').withRun('-d --name "sonarqube" p 9092:9092 -p 9000:9000') { c ->
-                         withSonarQubeEnv('sonarqube') {
-                               sh 'sudo ~/mvnw package -P dev  -Dmaven.test.skip=true sonar:sonar' 
-                         }
-                    }
+                            //sh 'sudo ~/mvnw package -Dmaven.test.skip=true -P dev' 
+                            sh 'sudo ~/mvnw clean'
+
+                            docker.image('sonarqube').withRun('-d --name "sonarqube" p 9092:9092 -p 9000:9000') { c ->
+                                 withSonarQubeEnv('sonarqube') {
+                                       sh 'sudo ~/mvnw package -P dev  -Dmaven.test.skip=true sonar:sonar' 
+                                 }
+                            }
+                    } // script
             }
             post {
                 success {
