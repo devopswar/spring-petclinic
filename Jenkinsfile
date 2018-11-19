@@ -39,7 +39,7 @@ pipeline {
                                     
                                  withCredentials([usernamePassword(credentialsId: 'devmysql', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {   
                                      withSonarQubeEnv('sonarqube') {
-                                         sh 'sudo -E ~/mvnw package -P dev  -Dmaven.test.skip=true sonar:sonar' 
+                                         sh 'sudo ~/mvnw package -P dev  -Dmaven.test.skip=true sonar:sonar' 
                                      } // end withSonar
                                  } // end withCreds
                             }
