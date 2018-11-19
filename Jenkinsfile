@@ -127,11 +127,62 @@ pipeline {
                                     
                             withKubeConfig(caCertificate: '', contextName: '', credentialsId: 'kubeconfig-file', serverUrl: '') 
                             {
-                                 // delete previous run
-                                 sh 'kubectl delete deploy petclinic || true'                                    
-                                 sh 'kubectl run petclinic --replicas=5 --labels="run=petclinic" --image=devopswar/petclinic --image-pull-policy Always'
-                                 // sh 'kubectl expose deployment petclinic --type=NodePort --name=petclinic-svc --port=8080 || true' 
-                            }                                    
+                                 withCredentials([usernamePassword(credentialsId: 'mysql-release', usernameVariable: 'MYSQL_RELEASE_DB_USER', passwordVariable: 'MYSQL_RELEASE_DB_PASSWORD')]) 
+                                 {   
+                                      // delete previous run
+                                      sh 'kubectl delete deploy petclinic || true'                                    
+                                      //sh 'kubectl run petclinic --replicas=5 --labels="run=petclinic" --image=devopswar/petclinic --image-pull-policy Always'
+                                         
+                                        sh `kubectl apply -f - <<EOF
+                                                apiVersion: apps/v1beta1 #for versions before 1.6.0 use extensions/v1beta1
+                                                kind: Deployment
+                                                metadata:
+                                                  name: petclinic
+                                                  labels:
+                                                    app: petclinic
+                                                spec:
+                                                  replicas: 5
+                                                  template:
+                                                    metadata:
+                                                      labels:
+                                                        app: petclinic
+                                                    spec:
+                                                      containers:
+                                                      - name: petclinic
+                                                        image: devopswar/petclinic
+                                                        imagePullPolicy: Always
+                                                        env:
+                                                        - name: MYSQL_RELEASE_DB_USER
+                                                          value: Nisi
+                                                        - name: MYSQL_RELEASE_DB_PASSWORD
+                                                          value: V,s6y4%A*B2me3?U
+                                                        ports:
+                                                        - name: http
+                                                          containerPort: 8080
+                                                          protocol: TCP
+                                                ---
+                                                apiVersion: v1
+                                                kind: Service
+                                                metadata:
+                                                  name: petclinic
+                                                  labels:
+                                                    app: petclinic
+                                                spec:
+                                                  type: LoadBalancer
+                                                  selector:
+                                                    app: petclinic
+                                                  ports:
+                                                  - name: http
+                                                    port: 80
+                                                    targetPort: 8080
+                                                    nodePort: 32052
+                                                    protocol: TCP
+                                                EOF`                              
+                                         
+                                         
+                                      // sh 'kubectl expose deployment petclinic --type=NodePort --name=petclinic-svc --port=8080 || true' 
+                                 } // end withCreds
+                            } .. end withKubeConfig
 
                                     
 //                            kubernetesDeploy configs: '<includes="**/*"/>', 
