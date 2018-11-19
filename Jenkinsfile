@@ -80,7 +80,7 @@ pipeline {
                                 // after the mysql is up -> run the target
                                 //sh 'java -jar ./target/*.jar &'
                                 
-                                withCredentials([usernamePassword(credentialsId: 'devmysql', usernameVariable: 'MYSQL_USERNAME', passwordVariable: 'MYSQL_PASSWORD')]) {   
+                                withCredentials([usernamePassword(credentialsId: 'devmysql', usernameVariable: 'MYSQL_DB_USER', passwordVariable: 'MYSQL_DB_PASSWORD')]) {   
                                     sh 'sudo ~/mvnw test -P test' 
                                 } // end withCreds
                                    
