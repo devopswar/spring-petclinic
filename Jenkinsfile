@@ -82,7 +82,8 @@ pipeline {
                                 
                                 withCredentials([usernamePassword(credentialsId: 'devmysql', usernameVariable: 'MYSQL_DB_USER', passwordVariable: 'MYSQL_DB_PASSWORD')]) {   
                                         sh 'echo uname=$MYSQL_DB_USER pwd=$MYSQL_DB_PASSWORD'
-                                    sh 'sudo ~/mvnw test -P test' 
+                                        input id: 'Deploy', message: 'Proceed with Green node deployment?', ok: 'Deploy!'                       
+                                        sh 'sudo ~/mvnw test -P test' 
                                 } // end withCreds
                                    
                                 
