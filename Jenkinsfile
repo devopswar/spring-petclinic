@@ -68,28 +68,23 @@ pipeline {
                      //sh 'docker version'
                          
                      script {
-                        docker.image('mysql:5.7.8').withRun('-e "MYSQL_ROOT_PASSWORD=petclinic" -e "MYSQL_DATABASE=petclinic" -p 3306:3306') { c ->
-                                /* Wait until mysql service is up */
-                                sh 'while ! mysqladmin ping -h0.0.0.0 --silent; do sleep 1; done'
-                                
-                                // setup the database
-                                sh 'mysql --protocol tcp -h localhost -u root --password="petclinic" petclinic < ./src/main/resources/db/mysql/schema.sql'
-                                sh 'mysql --protocol tcp -h localhost -u root --password="petclinic" petclinic < ./src/main/resources/db/mysql/data.sql'
+                        withCredentials([usernamePassword(credentialsId: 'devmysql', usernameVariable: 'MYSQL_DB_USER', passwordVariable: 'MYSQL_DB_PASSWORD')]) 
+                        {   
+                            docker.image('mysql:5.7.8').withRun('-e "MYSQL_ROOT_PASSWORD=$MYSQL_DB_USER" -e "MYSQL_DATABASE=$MYSQL_DB_PASSWORD" -p 3306:3306') { c ->
+                                    /* Wait until mysql service is up */
+                                    sh 'while ! mysqladmin ping -h0.0.0.0 --silent; do sleep 1; done'
 
-                                /* Run some tests which require MySQL */
-                                // after the mysql is up -> run the target
-                                //sh 'java -jar ./target/*.jar &'
-                                
-                                withCredentials([usernamePassword(credentialsId: 'devmysql', usernameVariable: 'MYSQL_DB_USER', passwordVariable: 'MYSQL_DB_PASSWORD')]) {   
-                                        sh 'env'
-                                        input id: 'Deploy', message: 'Proceed with Green node deployment?', ok: 'Deploy!'                       
-                                        sh 'sudo -E ~/mvnw test -P test' 
-                                } // end withCreds
-                                   
-                                
-                                //input id: 'Deploy', message: 'Proceed with Green node deployment?', ok: 'Deploy!'                       
-                                
-                         } // end docker run
+                                    // setup the database
+                                    sh 'mysql --protocol tcp -h localhost -u $MYSQL_DB_USER --password="$MYSQL_DB_PASSWORD" petclinic < ./src/main/resources/db/mysql/schema.sql'
+                                    sh 'mysql --protocol tcp -h localhost -u $MYSQL_DB_USER --password="$MYSQL_DB_PASSWORD" petclinic < ./src/main/resources/db/mysql/data.sql'
+
+                                    /* Run some tests which require MySQL */
+                                    // after the mysql is up -> run the target
+                                    //sh 'java -jar ./target/*.jar &'
+                                    sh 'env'
+                                    sh 'sudo -E ~/mvnw test -P test' 
+                                 } // end docker run
+                         } // end withCreds
                      } // end script
                        
                      //sh 'sleep 15'
@@ -108,7 +103,10 @@ pipeline {
             steps {
                     //sh 'sudo apt-get install -y default-jdk'
                     //sh 'sudo apt-get install -y mysql-client-5.7'
-                    sh 'sudo ~/mvnw package -Dmaven.test.skip=true -P release' 
+
+                    withCredentials([usernamePassword(credentialsId: 'mysql-release', usernameVariable: 'MYSQL_RELEASE_DB_USER', passwordVariable: 'MYSQL_RELEASE_DB_PASSWORD')]) {   
+                         sh 'sudo -E ~/mvnw package -Dmaven.test.skip=true -P release' 
+                    } // end withCreds
             }
             post {
                 success {
