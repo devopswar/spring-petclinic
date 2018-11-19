@@ -35,11 +35,13 @@ pipeline {
                             sh 'sudo ~/mvnw clean'
 
                             docker.image('sonarqube').withRun('--name "sonarqube" -p 9092:9092 -p 9000:9000') { c ->
-                                 
                                  sh 'sleep 20'
-                                 withSonarQubeEnv('sonarqube') {
-                                       sh 'sudo ~/mvnw package -P dev  -Dmaven.test.skip=true sonar:sonar' 
-                                 }
+                                    
+                                 withCredentials([usernamePassword(credentialsId: 'devmysql', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {   
+                                     withSonarQubeEnv('sonarqube') {
+                                         sh 'sudo ~/mvnw package -P dev  -Dmaven.test.skip=true sonar:sonar' 
+                                     } // end withSonar
+                                 } // end withCreds
                             }
                     } // script
             }
