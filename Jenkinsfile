@@ -184,7 +184,7 @@ pipeline {
                                          
                                       // sh 'kubectl expose deployment petclinic --type=NodePort --name=petclinic-svc --port=8080 || true' 
                                  } // end withCreds
-                            } .. end withKubeConfig
+                            } // end withKubeConfig
 
                                     
 //                            kubernetesDeploy configs: '<includes="**/*"/>', 
