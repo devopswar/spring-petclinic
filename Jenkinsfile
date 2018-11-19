@@ -161,7 +161,7 @@ pipeline {
                                                         - name: http
                                                           containerPort: 8080
                                                           protocol: TCP
-                                                ---
+---
                                                 apiVersion: v1
                                                 kind: Service
                                                 metadata:
