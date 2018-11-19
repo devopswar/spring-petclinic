@@ -132,8 +132,9 @@ pipeline {
                                       // delete previous run
                                       sh 'kubectl delete deploy petclinic || true'                                    
                                       //sh 'kubectl run petclinic --replicas=5 --labels="run=petclinic" --image=devopswar/petclinic --image-pull-policy Always'
-                                         
-                                        sh `kubectl apply -f - <<EOF
+
+                                        sh '''
+                                         kubectl apply -f - <<EOF
                                                 apiVersion: apps/v1beta1 #for versions before 1.6.0 use extensions/v1beta1
                                                 kind: Deployment
                                                 metadata:
@@ -177,8 +178,9 @@ pipeline {
                                                     targetPort: 8080
                                                     nodePort: 32052
                                                     protocol: TCP
-                                                EOF`                              
-                                         
+                                                EOF
+                                        '''                 
+                                        
                                          
                                       // sh 'kubectl expose deployment petclinic --type=NodePort --name=petclinic-svc --port=8080 || true' 
                                  } // end withCreds
