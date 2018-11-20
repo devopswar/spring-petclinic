@@ -29,7 +29,7 @@ pipeline {
 
                             docker.image('sonarqube').withRun('-p 9092:9092 -p 9000:9000') { c ->
                                  // wait for the sonar container to be up and running
-                                 sh 'sleep 10'
+                                 sh 'sleep 20'
                                     
                                  withCredentials([usernamePassword(credentialsId: 'devmysql', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {   
                                      withSonarQubeEnv('sonarqube') {
