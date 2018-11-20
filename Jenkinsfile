@@ -1,12 +1,6 @@
 pipeline {
     agent { 
         label 'ubuntu' 
-            /* 
-            docker { 
-                 image 'maven:3.3-jdk-8'
-                 args '-p 8080:8080'
-            } 
-            */ 
     }
    
     stages {
@@ -20,22 +14,22 @@ pipeline {
             }
         }
 
-        stage ('Build Dev') {
+        stage ('Build Dev & Test Sonar') {
             steps {
+                    // ----- this has been moved to Ansible -----
                     //sh 'sudo apt-get install -y default-jdk'
                     //sh 'sudo apt-get install -y mysql-client-5.7'
-                    //sh 'sleep 30'
                     script {
                             ansibleTower credential: '', extraVars: '', importTowerLogs: false, 
                                          importWorkflowChildLogs: false, inventory: '', jobTags: '', 
                                          jobTemplate: 'config-worker', jobType: 'run', limit: '', removeColor: false, 
                                          skipJobTags: '', templateType: 'job', towerServer: 'ansible1', verbose: true                    
 
-                            //sh 'sudo ~/mvnw package -Dmaven.test.skip=true -P dev' 
                             sh 'sudo ~/mvnw clean'
 
                             docker.image('sonarqube').withRun('-p 9092:9092 -p 9000:9000') { c ->
-                                 sh 'sleep 20'
+                                 // wait for the sonar container to be up and running
+                                 sh 'sleep 10'
                                     
                                  withCredentials([usernamePassword(credentialsId: 'devmysql', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {   
                                      withSonarQubeEnv('sonarqube') {
@@ -47,26 +41,13 @@ pipeline {
             }
             post {
                 success {
-                    echo 'build dev success' // run sonarqube tests here...   junit 'target/surefire-reports/**/*.xml' 
+                    echo 'build dev & sonar success' 
                 }
             }
         } // end stage build
             
-        stage ('Test') {
+        stage ('Functional Tests') {
                  steps {
-                     sh 'pwd'
-                     sh 'whoami && id'
-                     //sh 'docker version'
-                     //sh 'su -l $USER'
-                     //sh 'sudo groupadd docker || true'
-                     //sh 'sudo gpasswd -a $USER docker'
-                     //sh 'newgrp docker'
-                     //sh 'newgrp -'
-                     //sh 'docker version'
-                         
-                     //sh 'sg "$(id -gn)" -c "groups"'
-                     //sh 'docker version'
-                         
                      script {
                         withCredentials([usernamePassword(credentialsId: 'devmysql', usernameVariable: 'MYSQL_DB_USER', passwordVariable: 'MYSQL_DB_PASSWORD')]) 
                         {   
@@ -80,19 +61,14 @@ pipeline {
 
                                     /* Run some tests which require MySQL */
                                     // after the mysql is up -> run the target
-                                    //sh 'java -jar ./target/*.jar &'
-                                    sh 'env'
                                     sh 'sudo -E ~/mvnw test -P test' 
                                  } // end docker run
                          } // end withCreds
                      } // end script
-                       
-                     //sh 'sleep 15'
-                     // sh 'wget localhost:8080 && echo "tests success" || exit 1'
-                     //sh 'sudo kill $(pidof java)'
-                }
+                } // end steps
         } // end stage test
-         
+
+        // wait for user input before Deploying
         stage ('wait for input') { 
                steps { 
                    input id: 'Deploy', message: 'Proceed with Green node deployment?', ok: 'Deploy!'                       
@@ -154,9 +130,9 @@ spec:
         imagePullPolicy: Always
         env:
         - name: MYSQL_RELEASE_DB_USER
-          value: Nisi
+          value: $MYSQL_RELEASE_DB_USER
         - name: MYSQL_RELEASE_DB_PASSWORD
-          value: V,s6y4%A*B2me3?U
+          value: $MYSQL_RELEASE_DB_PASSWORD
         ports:
         - name: http
           containerPort: 8080
