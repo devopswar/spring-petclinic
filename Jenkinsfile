@@ -106,7 +106,7 @@ pipeline {
                                  withCredentials([usernamePassword(credentialsId: 'mysql-release', usernameVariable: 'MYSQL_RELEASE_DB_USER', passwordVariable: 'MYSQL_RELEASE_DB_PASSWORD')]) 
                                  {   
                                       // delete previous run
-                                      sh 'kubectl delete deploy petclinic || true'                                    
+                                      // sh 'kubectl delete deploy petclinic || true'                                    
                                       //sh 'kubectl run petclinic --replicas=5 --labels="run=petclinic" --image=devopswar/petclinic --image-pull-policy Always'
 
                                         sh '''
