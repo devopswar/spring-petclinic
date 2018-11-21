@@ -10,10 +10,11 @@ pipeline {
                     echo "PATH = ${PATH}"
                     echo "M2_HOME = ${M2_HOME}"
                 ''' 
+
                     
+// # export token1=$(curl -k -XPOST https://ec2-54-193-30-240.us-west-1.compute.amazonaws.com/authn/devopswar/host%2ffrontend%2ffrontend-01/authenticate -d '3jp44983vmy3se1mmzsgk2g9qh3x29v9jnv1mmwev521x84p23gka0x8' | base64 | tr -d '\r\n')                    
                 sh '''
                     #!/bin/bash
-                    # export token1=$(curl -k -XPOST https://ec2-54-193-30-240.us-west-1.compute.amazonaws.com/authn/devopswar/host%2ffrontend%2ffrontend-01/authenticate -d '3jp44983vmy3se1mmzsgk2g9qh3x29v9jnv1mmwev521x84p23gka0x8' | base64 | tr -d '\r\n')
                     curl -k -XPOST https://ec2-54-193-30-240.us-west-1.compute.amazonaws.com/authn/devopswar/host%2ffrontend%2ffrontend-01/authenticate -d '3jp44983vmy3se1mmzsgk2g9qh3x29v9jnv1mmwev521x84p23gka0x8'
                     echo token1=${token1}
                     response_pwd=$(curl -k https://ec2-54-193-30-240.us-west-1.compute.amazonaws.com/secrets/devopswar/variable/db/password -H "Authorization: Token token=\"${token1}\"")
