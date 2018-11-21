@@ -1,3 +1,5 @@
+import groovy.json.JsonSlurperClassic
+
 pipeline {
     agent { 
         label 'ubuntu' 
