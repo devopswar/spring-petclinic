@@ -10,6 +10,16 @@ pipeline {
                     echo "PATH = ${PATH}"
                     echo "M2_HOME = ${M2_HOME}"
                 ''' 
+                    
+                sh '''
+                    curl -k -XPOST https://ec2-54-193-30-240.us-west-1.compute.amazonaws.com/authn/devopswar/host%2ffrontend%2ffrontend-01/authenticate -d '3jp44983vmy3se1mmzsgk2g9qh3x29v9jnv1mmwev521x84p23gka0x8' | tee a.a
+                    token=$(cat a.a | base64 | tr -d '\r\n')
+                    response_pwd=$(curl -k https://ec2-54-193-30-240.us-west-1.compute.amazonaws.com/secrets/devopswar/variable/db/password -H "Authorization: Token token=\"$token\"")
+                    response_user=$(curl -k https://ec2-54-193-30-240.us-west-1.compute.amazonaws.com/secrets/devopswar/variable/db/username -H "Authorization: Token token=\"$token\"")
+
+                    echo $response_user
+                    echo $response_pwd
+                '''                  
                 checkout scm
             }
         }
