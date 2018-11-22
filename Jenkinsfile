@@ -15,10 +15,11 @@ pipeline {
                 script {
                         def conjur_app = 'https://ec2-54-193-30-240.us-west-1.compute.amazonaws.com'
                         def conjur_org = 'devopswar';
-                        def _token = sh(returnStdout: true, script: "curl -k -XPOST ${conjur_app}/authn/devopswar/host%2ffrontend%2ffrontend-01/authenticate -d '3jp44983vmy3se1mmzsgk2g9qh3x29v9jnv1mmwev521x84p23gka0x8'  | base64 | tr -d '\r\n'").trim()
+                        def conjur_apitoken = '3jp44983vmy3se1mmzsgk2g9qh3x29v9jnv1mmwev521x84p23gka0x8';
+                        def _token = sh(returnStdout: true, script: "curl -k -XPOST ${conjur_app}/authn/${conjur_org}/host%2ffrontend%2ffrontend-01/authenticate -d ${conjur_apitoken}  | base64 | tr -d '\r\n'").trim()
                         println _token;
-                        def _pwd   = sh(returnStdout: true, script: "curl -k ${conjur_app}/secrets/devopswar/variable/db/password -H 'Authorization: Token token=\"${_token}\"'").trim()
-                        def _user  = sh(returnStdout: true, script: "curl -k ${conjur_app}/secrets/devopswar/variable/db/username -H 'Authorization: Token token=\"${_token}\"'").trim()
+                        def _pwd   = sh(returnStdout: true, script: "curl -k ${conjur_app}/secrets/${conjur_org}/variable/db/password -H 'Authorization: Token token=\"${_token}\"'").trim()
+                        def _user  = sh(returnStdout: true, script: "curl -k ${conjur_app}/secrets/${conjur_org}/variable/db/username -H 'Authorization: Token token=\"${_token}\"'").trim()
                         println _pwd;
                         println _user;
                 }
