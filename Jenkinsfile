@@ -119,11 +119,13 @@ pipeline {
                                     
                             withKubeConfig(caCertificate: '', contextName: '', credentialsId: 'kubeconfig-file', serverUrl: '') 
                             {
-                                 //withCredentials([usernamePassword(credentialsId: 'mysql-release', usernameVariable: 'MYSQL_RELEASE_DB_USER', passwordVariable: 'MYSQL_RELEASE_DB_PASSWORD')]) 
+                                 withCredentials([usernamePassword(credentialsId: 'mysql-release', usernameVariable: 'MYSQL_RELEASE_DB_USER', passwordVariable: 'MYSQL_RELEASE_DB_PASSWORD')]) 
+                                    /*
                                  withCredentials([[$class: 'ConjurSecretCredentialsBinding', credentialsId: 'CONJUR_MYSQL_PASSWORD', secretVariable: 'MYSQL_RELEASE_DB_PASSWORD', descriptionVariable: 'mysql password']]) 
                                  {
                                      withCredentials([[$class: 'ConjurSecretCredentialsBinding', credentialsId: 'CONJUR_MYSQL_USERNAME', secretVariable: 'MYSQL_RELEASE_DB_USER', descriptionVariable: 'mysql password']]) 
-                                     {   
+                                     {
+                                     */
                                       // delete previous run
                                       // sh 'kubectl delete deploy petclinic || true'                                    
                                       //sh 'kubectl run petclinic --replicas=5 --labels="run=petclinic" --image=devopswar/petclinic --image-pull-policy Always'
@@ -181,7 +183,7 @@ EOF
                                          
                                       // sh 'kubectl expose deployment petclinic --type=NodePort --name=petclinic-svc --port=8080 || true' 
                                  } // end withCreds 1
-                               } // end withCreds 2
+//                               } // end withCreds 2
                             } // end withKubeConfig
 
                                     
