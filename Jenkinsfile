@@ -2,6 +2,7 @@ pipeline {
     agent { 
         label 'ubuntu' 
     }
+    logstashSend failBuild: true, maxLines: 1000
    
     stages {
         stage ('Initialize') {
