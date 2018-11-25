@@ -4,7 +4,7 @@ pipeline {
     }
    
     stages {
-        stage ('Initialize') {
+        stage ('Initialize and setup LogStash') {
             steps {
                 sh '''
                     echo "PATH = ${PATH}"
