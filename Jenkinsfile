@@ -2,7 +2,6 @@ pipeline {
     agent { 
         label 'ubuntu' 
     }
-    logstashSend failBuild: true, maxLines: 1000
    
     stages {
         stage ('Initialize') {
@@ -10,7 +9,10 @@ pipeline {
                 sh '''
                     echo "PATH = ${PATH}"
                     echo "M2_HOME = ${M2_HOME}"
-                ''' 
+                '''
+                    
+                logstashSend failBuild: true, maxLines: 1000
+
 
                 // **** GRAB db password and username from Conjur ****
                 script {
