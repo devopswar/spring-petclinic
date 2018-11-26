@@ -119,9 +119,9 @@ pipeline {
                                     
                             withKubeConfig(caCertificate: '', contextName: '', credentialsId: 'kubeconfig-file', serverUrl: '') 
                             {
-                                 //withCredentials([usernamePassword(credentialsId: 'mysql-release', usernameVariable: 'MYSQL_RELEASE_DB_USER', passwordVariable: 'MYSQL_RELEASE_DB_PASSWORD')]) 
+                                 withCredentials([usernamePassword(credentialsId: 'mysql-release', usernameVariable: 'MYSQL_RELEASE_DB_USER', passwordVariable: 'MYSQL_RELEASE_DB_PASSWORD')]) 
                                  //{
-                                 withCredentials([conjurSecretCredential(credentialsId: 'CONJUR_MYSQL_PASSWORD', variable: 'MYSQL_RELEASE_DB_PASSWORD'), conjurSecretCredential(credentialsId: 'CONJUR_MYSQL_USERNAME', variable: 'MYSQL_RELEASE_DB_USER')])
+                                 //withCredentials([conjurSecretCredential(credentialsId: 'CONJUR_MYSQL_PASSWORD', variable: 'MYSQL_RELEASE_DB_PASSWORD'), conjurSecretCredential(credentialsId: 'CONJUR_MYSQL_USERNAME', variable: 'MYSQL_RELEASE_DB_USER')])
                                  {
                                      echo "password=$MYSQL_RELEASE_DB_PASSWORD"
                                      echo "username=$MYSQL_RELEASE_DB_USER"
