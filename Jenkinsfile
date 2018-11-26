@@ -123,7 +123,7 @@ pipeline {
                                  //{
                                     
                                  //withCredentials([[$class: 'ConjurSecretCredentialsBinding', credentialsId: 'CONJUR_MYSQL_PASSWORD', secretVariable: 'MYSQL_RELEASE_DB_PASSWORD', descriptionVariable: 'mysql password']]) 
-                                 withCredentials([conjurSecretCredential(credentialsId: 'conjur-login', variable: 'CONJUR_MYSQL_PASSWORD')]) {
+                                 withCredentials([conjurSecretCredential(credentialsId: 'conjur-login', variable: 'CONJUR_MYSQL_PASSWORD')]) 
                                  {
                                          
                                          sh 'echo password=$MYSQL_RELEASE_DB_PASSWORD'
