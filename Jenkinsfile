@@ -38,7 +38,7 @@ pipeline {
                     script {
                             ansibleTower credential: '', extraVars: '', importTowerLogs: false, 
                                          importWorkflowChildLogs: false, inventory: '', jobTags: '', 
-                                         jobTemplate: 'config-worker_github', jobType: 'run', limit: '', removeColor: false, 
+                                         jobTemplate: 'config-worker_git_conjur', jobType: 'run', limit: '', removeColor: false, 
                                          skipJobTags: '', templateType: 'job', towerServer: 'ansible1', verbose: true                    
 
                             sh 'sudo ~/mvnw clean'
