@@ -156,9 +156,9 @@ spec:
         - name: BUILD_NUMBER
           value: "$BUILD_NUMBER"
         - name: MYSQL_RELEASE_DB_USER
-          value: $MYSQL_RELEASE_DB_USER
+          value: "$MYSQL_RELEASE_DB_USER"
         - name: MYSQL_RELEASE_DB_PASSWORD
-          value: $MYSQL_RELEASE_DB_PASSWORD
+          value: "$MYSQL_RELEASE_DB_PASSWORD"
         ports:
         - name: http
           containerPort: 8080
