@@ -137,8 +137,8 @@ pipeline {
                                 def _token = sh(returnStdout: true, script: "curl -k -XPOST ${conjur_url}/authn/${conjur_org}/host%2ffrontend%2ffrontend-01/authenticate -d ${conjur_apitoken}  | base64 | tr -d '\r\n'").trim()
                                 println _token;
                                 environment {
-                                    env.MYSQL_RELEASE_DB_PASSWORD = sh(returnStdout: true, script: "curl -k ${conjur_url}/secrets/${conjur_org}/variable/db/password -H 'Authorization: Token token=\"${_token}\"'").trim()
-                                    env.MYSQL_RELEASE_DB_USER = sh(returnStdout: true, script: "curl -k ${conjur_url}/secrets/${conjur_org}/variable/db/username -H 'Authorization: Token token=\"${_token}\"'").trim()
+                                    MYSQL_RELEASE_DB_PASSWORD = sh(returnStdout: true, script: "curl -k ${conjur_url}/secrets/${conjur_org}/variable/db/password -H 'Authorization: Token token=\"${_token}\"'").trim()
+                                    MYSQL_RELEASE_DB_USER = sh(returnStdout: true, script: "curl -k ${conjur_url}/secrets/${conjur_org}/variable/db/username -H 'Authorization: Token token=\"${_token}\"'").trim()
                                 }
                                          
                                      echo "password=$MYSQL_RELEASE_DB_PASSWORD"
