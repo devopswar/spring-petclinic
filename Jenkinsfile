@@ -172,6 +172,8 @@ spec:
         image: devopswar/petclinic
         imagePullPolicy: Always
         env:
+        - name: BUILD_NUMBER
+          value: "$BUILD_NUMBER" 
         - name: MYSQL_RELEASE_DB_USER
           valueFrom:
             secretKeyRef:
