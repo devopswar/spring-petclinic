@@ -15,6 +15,7 @@ pipeline {
 
 
                 // **** GRAB db password and username from Conjur ****
+/*                    
                 script {
                         def conjur_url = 'https://ec2-54-193-30-240.us-west-1.compute.amazonaws.com'
                         def conjur_org = 'devopswar';
@@ -26,6 +27,7 @@ pipeline {
                         println _pwd;
                         println _user;
                 }
+*/                
                 checkout scm
             }
         }
