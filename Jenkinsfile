@@ -111,6 +111,10 @@ pipeline {
         } // end stage build
             
         stage ('Deploy') {
+              environment { 
+                MYSQL_RELEASE_DB_PASSWORD = 'value2'
+                MYSQL_RELEASE_DB_USER     = 'value1'
+               }            
                steps {
                        script {
                             app = docker.build( "devopswar/petclinic")
@@ -132,8 +136,8 @@ pipeline {
                                 def conjur_apitoken = '3jp44983vmy3se1mmzsgk2g9qh3x29v9jnv1mmwev521x84p23gka0x8';
                                 def _token = sh(returnStdout: true, script: "curl -k -XPOST ${conjur_url}/authn/${conjur_org}/host%2ffrontend%2ffrontend-01/authenticate -d ${conjur_apitoken}  | base64 | tr -d '\r\n'").trim()
                                 println _token;
-                                def MYSQL_RELEASE_DB_PASSWORD = sh(returnStdout: true, script: "curl -k ${conjur_url}/secrets/${conjur_org}/variable/db/password -H 'Authorization: Token token=\"${_token}\"'").trim()
-                                def MYSQL_RELEASE_DB_USER = sh(returnStdout: true, script: "curl -k ${conjur_url}/secrets/${conjur_org}/variable/db/username -H 'Authorization: Token token=\"${_token}\"'").trim()
+                                env.MYSQL_RELEASE_DB_PASSWORD = sh(returnStdout: true, script: "curl -k ${conjur_url}/secrets/${conjur_org}/variable/db/password -H 'Authorization: Token token=\"${_token}\"'").trim()
+                                env.MYSQL_RELEASE_DB_USER = sh(returnStdout: true, script: "curl -k ${conjur_url}/secrets/${conjur_org}/variable/db/username -H 'Authorization: Token token=\"${_token}\"'").trim()
                                          
                                      echo "password=$MYSQL_RELEASE_DB_PASSWORD"
                                      echo "username=$MYSQL_RELEASE_DB_USER"
@@ -168,9 +172,9 @@ spec:
         - name: BUILD_NUMBER
           value: "$BUILD_NUMBER"
         - name: MYSQL_RELEASE_DB_USER
-          value: Nisi
+          value: $MYSQL_RELEASE_DB_USER
         - name: MYSQL_RELEASE_DB_PASSWORD
-          value: NewPassword4$
+          value: $MYSQL_RELEASE_DB_PASSWORD
         ports:
         - name: http
           containerPort: 8080
