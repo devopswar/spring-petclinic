@@ -152,7 +152,7 @@ pipeline {
                                       //sh 'kubectl run petclinic --replicas=5 --labels="run=petclinic" --image=devopswar/petclinic --image-pull-policy Always'
 
                                         sh '''
-```kubectl apply -f - <<EOF
+kubectl apply -f - <<EOF
 apiVersion: apps/v1beta1 #for versions before 1.6.0 use extensions/v1beta1
 kind: Deployment
 metadata:
@@ -204,59 +204,10 @@ spec:
     targetPort: 8080
     nodePort: 32052
     protocol: TCP
-EOF```
-
-
-/*
-kubectl apply -f - <<EOF
-apiVersion: apps/v1beta1 #for versions before 1.6.0 use extensions/v1beta1
-kind: Deployment
-metadata:
-  name: petclinic
-  labels:
-    app: petclinic
-spec:
-  replicas: 5
-  template:
-    metadata:
-      labels:
-        app: petclinic
-    spec:
-      containers:
-      - name: petclinic
-        image: devopswar/petclinic
-        imagePullPolicy: Always
-        env:
-        - name: BUILD_NUMBER
-          value: "$BUILD_NUMBER"
-        - name: MYSQL_RELEASE_DB_USER
-          value: $MYSQL_RELEASE_DB_USER
-        - name: MYSQL_RELEASE_DB_PASSWORD
-          value: $MYSQL_RELEASE_DB_PASSWORD
-        ports:
-        - name: http
-          containerPort: 8080
-          protocol: TCP
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: petclinic
-  labels:
-    app: petclinic
-spec:
-  type: LoadBalancer
-  selector:
-    app: petclinic
-  ports:
-  - name: http
-    port: 80
-    targetPort: 8080
-    nodePort: 32052
-    protocol: TCP
 EOF
-'''                 
-*/                                
+'''
+
+                        
                             } // end kubeconfig
                        } // endscript
                }
