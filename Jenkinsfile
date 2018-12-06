@@ -117,12 +117,21 @@ pipeline {
                             }        
 
                                     
-                            withKubeConfig(caCertificate: '', contextName: '', credentialsId: 'kubeconfig-file', serverUrl: '') 
+//                            withKubeConfig(caCertificate: '', contextName: '', credentialsId: 'kubeconfig-file', serverUrl: '') 
                             {
-                                 withCredentials([usernamePassword(credentialsId: 'mysql-release', usernameVariable: 'MYSQL_RELEASE_DB_USER', passwordVariable: 'MYSQL_RELEASE_DB_PASSWORD')]) 
+//                                 withCredentials([usernamePassword(credentialsId: 'mysql-release', usernameVariable: 'MYSQL_RELEASE_DB_USER', passwordVariable: 'MYSQL_RELEASE_DB_PASSWORD')]) 
                                  //{
                                  //withCredentials([conjurSecretCredential(credentialsId: 'CONJUR_MYSQL_PASSWORD', variable: 'MYSQL_RELEASE_DB_PASSWORD'), conjurSecretCredential(credentialsId: 'CONJUR_MYSQL_USERNAME', variable: 'MYSQL_RELEASE_DB_USER')])
                                  {
+                                         
+                                def conjur_url = 'https://ec2-54-193-30-240.us-west-1.compute.amazonaws.com'
+                                def conjur_org = 'devopswar';
+                                def conjur_apitoken = '3jp44983vmy3se1mmzsgk2g9qh3x29v9jnv1mmwev521x84p23gka0x8';
+                                def _token = sh(returnStdout: true, script: "curl -k -XPOST ${conjur_url}/authn/${conjur_org}/host%2ffrontend%2ffrontend-01/authenticate -d ${conjur_apitoken}  | base64 | tr -d '\r\n'").trim()
+                                println _token;
+                                def MYSQL_RELEASE_DB_PASSWORD = sh(returnStdout: true, script: "curl -k ${conjur_url}/secrets/${conjur_org}/variable/db/password -H 'Authorization: Token token=\"${_token}\"'").trim()
+                                def MYSQL_RELEASE_DB_USER = sh(returnStdout: true, script: "curl -k ${conjur_url}/secrets/${conjur_org}/variable/db/username -H 'Authorization: Token token=\"${_token}\"'").trim()
+                                         
                                      echo "password=$MYSQL_RELEASE_DB_PASSWORD"
                                      echo "username=$MYSQL_RELEASE_DB_USER"
                                          /*
