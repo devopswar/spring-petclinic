@@ -141,8 +141,8 @@ pipeline {
                                     MYSQL_RELEASE_DB_USER = sh(returnStdout: true, script: "curl -k ${conjur_url}/secrets/${conjur_org}/variable/db/username -H 'Authorization: Token token=\"${_token}\"'").trim()
                                 }
                                          
-                                     echo "password=$MYSQL_RELEASE_DB_PASSWORD"
-                                     echo "username=$MYSQL_RELEASE_DB_USER"
+                                     //echo "password=$MYSQL_RELEASE_DB_PASSWORD"
+                                     //echo "username=$MYSQL_RELEASE_DB_USER"
                                          /*
                                      withCredentials([[$class: 'ConjurSecretCredentialsBinding', credentialsId: 'CONJUR_MYSQL_USERNAME', secretVariable: 'MYSQL_RELEASE_DB_USER', descriptionVariable: 'mysql password']]) 
                                      {
@@ -152,6 +152,62 @@ pipeline {
                                       //sh 'kubectl run petclinic --replicas=5 --labels="run=petclinic" --image=devopswar/petclinic --image-pull-policy Always'
 
                                         sh '''
+```kubectl apply -f - <<EOF
+apiVersion: apps/v1beta1 #for versions before 1.6.0 use extensions/v1beta1
+kind: Deployment
+metadata:
+  name: petclinic
+  namespace: default
+  labels:
+    app: petclinic
+spec:
+  replicas: 5
+  template:
+    metadata:
+      labels:
+        app: petclinic
+    spec:
+      containers:
+      - name: petclinic
+        image: devopswar/petclinic
+        imagePullPolicy: Always
+        env:
+        - name: MYSQL_RELEASE_DB_USER
+          valueFrom:
+            secretKeyRef:
+              name: db-user-pass
+              key: username
+        - name: MYSQL_RELEASE_DB_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: db-user-pass
+              key: password
+        ports:
+        - name: http
+          containerPort: 8080
+          protocol: TCP
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: petclinic
+  namespace: default
+  labels:
+    app: petclinic
+spec:
+  type: LoadBalancer
+  selector:
+    app: petclinic
+  ports:
+  - name: http
+    port: 80
+    targetPort: 8080
+    nodePort: 32052
+    protocol: TCP
+EOF```
+
+
+/*
 kubectl apply -f - <<EOF
 apiVersion: apps/v1beta1 #for versions before 1.6.0 use extensions/v1beta1
 kind: Deployment
@@ -200,6 +256,7 @@ spec:
     protocol: TCP
 EOF
 '''                 
+*/                                
                             } // end kubeconfig
                        } // endscript
                }
