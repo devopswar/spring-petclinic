@@ -170,7 +170,7 @@ spec:
         - name: MYSQL_RELEASE_DB_USER
           value: Nisi
         - name: MYSQL_RELEASE_DB_PASSWORD
-          value: Password4$
+          value: NewPassword4$
         ports:
         - name: http
           containerPort: 8080
