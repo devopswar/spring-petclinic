@@ -24,8 +24,8 @@ pipeline {
                         println _token;
                         def _pwd   = sh(returnStdout: true, script: "curl -k ${conjur_url}/secrets/${conjur_org}/variable/db/password -H 'Authorization: Token token=\"${_token}\"'").trim()
                         def _user  = sh(returnStdout: true, script: "curl -k ${conjur_url}/secrets/${conjur_org}/variable/db/username -H 'Authorization: Token token=\"${_token}\"'").trim()
-                        println _pwd;
-                        println _user;
+                        //println _pwd;
+                        //println _user;
                 }
                 
                 checkout scm
