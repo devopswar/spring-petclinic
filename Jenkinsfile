@@ -119,8 +119,8 @@ pipeline {
                             }        
 
                                     
-//                            withKubeConfig(caCertificate: '', contextName: '', credentialsId: 'kubeconfig-file', serverUrl: '') 
-//                            {
+                            withKubeConfig(caCertificate: '', contextName: '', credentialsId: 'kubeconfig-file', serverUrl: '') 
+                            {
 //                                 withCredentials([usernamePassword(credentialsId: 'mysql-release', usernameVariable: 'MYSQL_RELEASE_DB_USER', passwordVariable: 'MYSQL_RELEASE_DB_PASSWORD')]) 
                                  //{
                                  //withCredentials([conjurSecretCredential(credentialsId: 'CONJUR_MYSQL_PASSWORD', variable: 'MYSQL_RELEASE_DB_PASSWORD'), conjurSecretCredential(credentialsId: 'CONJUR_MYSQL_USERNAME', variable: 'MYSQL_RELEASE_DB_USER')])
@@ -193,6 +193,7 @@ spec:
     protocol: TCP
 EOF
 '''                 
+                            } // end kubeconfig
                        } // endscript
                }
         }
